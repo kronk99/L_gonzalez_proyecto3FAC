@@ -10,11 +10,17 @@ class Ventana:
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")  # Da el tamaño de la ventana
         self.root.resizable(False, False)
 
-        #self.Img_Uniciclo = Image.open("Uniciclo.jpeg")
-        #self.Uni_imagen = ImageTk.PhotoImage(self.Img_Uniciclo)
+        self.Img_Uniciclo = Image.open("ProyectoFunda/view/uniciclo.png")
+        self.Img_hazard = Image.open("ProyectoFunda/view/hazards.png")
+
+        self.Uni_imagen = ImageTk.PhotoImage(self.Img_Uniciclo)
+        self.hazard_imagen = ImageTk.PhotoImage(self.Img_hazard)
 
         def mostrar_Uniciclo():
             self.diagram_canva.create_image(300, 200,image=self.Uni_imagen)
+
+        def mostrar_hazard():
+            self.diagram_canva.create_image(300, 200,image=self.hazard_imagen)
 
         self.barra_menu = tk.Menu()
 
@@ -23,13 +29,15 @@ class Ventana:
         self.Uniciclo = tk.Menu(self.barra_menu, tearoff=False)
         self.Uniciclo.add_command(command=mostrar_Uniciclo, label="Paso a Paso")
         #self.Uniciclo.add_command(command=)
+        self.Uniciclo.add_command(command=mostrar_Uniciclo, label="Ejecución completa")
 
 
 
         self.barra_menu.add_cascade(menu=self.Tipo, label="Tipo de procesador")
         self.Tipo.add_cascade(menu=self.Uniciclo, label="Uniciclo")
-
-
+        self.Tipo.add_cascade(menu=self.Uniciclo, label="Multiciclo")
+        self.Tipo.add_cascade(menu=self.Uniciclo, label="Segmentado con riesgos y solucionando con stalls.")
+        self.Tipo.add_cascade(menu=self.Uniciclo, label="Segmentado con unidad de riesgos y adelantamiento.")
 
         self.root.config(menu=self.barra_menu)
 
