@@ -188,27 +188,28 @@ class Ventana:
         self.label_executeInf = tk.Label(root, text="Execution info", font=("Arial", 9))
         self.label_executeInf.place(x=860, y=290)
 
-        self.entry1_execInf = tk.Entry(self.canvas_execute_inf, width=30, font=("Arial", 9))
+        self.entry1_execInf = tk.Label(self.canvas_execute_inf, text=logica.ciclos, font=("Arial", 9))
         self.entry1_execInf.place(x=100, y=10)
+    
         self.label_execInf1 = tk.Label(self.canvas_execute_inf, text="Cycles:", font=("Arial", 9))
         self.label_execInf1.place(x=20, y=10)
 
-        self.entry2_execInf = tk.Entry(self.canvas_execute_inf, width=30, font=("Arial", 9))
+        self.entry2_execInf = tk.Label(self.canvas_execute_inf, text=logica.IR, font=("Arial", 9))
         self.entry2_execInf.place(x=100, y=50)
         self.label_execInf2 = tk.Label(self.canvas_execute_inf, text="Instrs.retired:", font=("Arial", 9))
         self.label_execInf2.place(x=20, y=50)
 
-        self.entry3_execInf = tk.Entry(self.canvas_execute_inf, width=30, font=("Arial", 9))
+        self.entry3_execInf = tk.Label(self.canvas_execute_inf, text=logica.CPI, font=("Arial", 9))
         self.entry3_execInf.place(x=100, y=90)
         self.label_execInf3 = tk.Label(self.canvas_execute_inf, text="CPI:", font=("Arial", 9))
         self.label_execInf3.place(x=20, y=90)
 
-        self.entry4_execInf = tk.Entry(self.canvas_execute_inf, width=30, font=("Arial", 9))
+        self.entry4_execInf = tk.Label(self.canvas_execute_inf, text=logica.IPC, font=("Arial", 9))
         self.entry4_execInf.place(x=100, y=130)
         self.label_execInf4 = tk.Label(self.canvas_execute_inf, text="IPC:", font=("Arial", 9))
         self.label_execInf4.place(x=20, y=130)
 
-        self.entry5_execInf = tk.Entry(self.canvas_execute_inf, width=30, font=("Arial", 9))
+        self.entry5_execInf = tk.Label(self.canvas_execute_inf, text=logica.ClkR, font=("Arial", 9))
         self.entry5_execInf.place(x=100, y=170)
         self.label_execInf5 = tk.Label(self.canvas_execute_inf, text="Clock rate:", font=("Arial", 9))
         self.label_execInf5.place(x=20, y=170)
