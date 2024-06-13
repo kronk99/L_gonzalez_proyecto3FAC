@@ -8,13 +8,22 @@ class Processor:
         self.state = "IF"          # Estado inicial
         self.instruction = ""      # Instrucción actual en formato texto
         self.program_size = 0      # Tamaño del programa cargado
+        self.total_cycles = 0      # Total de ciclos ejecutados
+        self.instructions_executed = 0  # Total de instrucciones ejecutadas
+        self.latency = {
+            "IF": 1,
+            "ID": 1,
+            "EX": 2,
+            "MEM": 2,
+            "WB": 1
+        }
 
     def fetch(self):
         self.IR = self.memory[self.PC]
         self.PC += 1
         self.state = "ID"
         self.instruction = f"Fetch: {self.IR:032b}"
-        self.current_cycle += 1
+        self.current_cycle += self.latency["IF"]
 
     def decode(self):
         self.opcode = self.IR & 0x7F
@@ -35,7 +44,7 @@ class Processor:
             self.instruction = "Decode: Instrucción no soportada"
 
         self.state = "EX"
-        self.current_cycle += 1
+        self.current_cycle += self.latency["ID"]
 
     def execute(self):
         if self.opcode == 0x33:  # Tipo R (Ejemplo: ADD)
@@ -56,20 +65,21 @@ class Processor:
         else:
             self.state = "IF"  # Estado por defecto para instrucciones no soportadas
         self.instruction = f"Execute: {self.instruction.split(': ')[1]}"
-        self.current_cycle += 1
+        self.current_cycle += self.latency["EX"]
 
     def memory_access(self):
         if self.opcode == 0x03:  # LW
             self.result = self.memory[self.address]
         self.state = "WB"
-        self.current_cycle += 1
+        self.current_cycle += self.latency["MEM"]
 
     def write_back(self):
         if self.opcode in [0x33, 0x13, 0x03]:  # Instrucciones tipo R e I
             self.registers[self.rd] = self.result
         self.state = "IF"
         self.instruction = f"Write Back: {self.instruction.split(': ')[1]}"
-        self.current_cycle += 1
+        self.current_cycle += self.latency["WB"]
+        self.instructions_executed += 1
 
     def run_cycle(self):
         while self.PC < self.program_size or self.state != "IF":
@@ -83,7 +93,8 @@ class Processor:
                 self.memory_access()
             elif self.state == "WB":
                 self.write_back()
-            print(f"Cycle: {self.current_cycle}, PC: {self.PC}, State: {self.state}")
+            self.total_cycles = self.current_cycle
+            print(f"Cycle: {self.total_cycles}, PC: {self.PC}, State: {self.state}")
             print(f"Registers: {self.registers[:4]}")  # Mostrar los primeros 4 registros
             print(f"Instruction: {self.instruction}")
             print("-" * 40)
@@ -124,3 +135,15 @@ processor.run_cycle()
 print("\nEstado final de los registros:")
 for i in range(8):  # Mostrar los primeros 8 registros para verificar
     print(f"x{i} = {processor.registers[i]}")
+
+# Calcular los valores solicitados
+latencia_promedio = processor.total_cycles / processor.instructions_executed
+cpi = processor.total_cycles / processor.instructions_executed
+ipc = processor.instructions_executed / processor.total_cycles
+tiempo_total = processor.total_cycles
+
+# Mostrar los resultados
+print(f"\nLatencia promedio: {latencia_promedio:.2f}")
+print(f"Tiempo total de ejecución: {tiempo_total} ciclos")
+print(f"CPI (Cycles Per Instruction): {cpi:.2f}")
+print(f"IPC (Instructions Per Cycle): {ipc:.2f}")
