@@ -111,7 +111,7 @@ class Ventana:
 
         self.entry2_execInf = tk.Entry(self.canvas_execute_inf, width=30, font=("Arial", 9))
         self.entry2_execInf.place(x=100, y=50)
-        self.label_execInf2 = tk.Label(self.canvas_execute_inf, text="Instrs.retired:", font=("Arial", 9))
+        self.label_execInf2 = tk.Label(self.canvas_execute_inf, text="Inst Actual:", font=("Arial", 9))
         self.label_execInf2.place(x=20, y=50)
 
         self.entry3_execInf = tk.Entry(self.canvas_execute_inf, width=30, font=("Arial", 9))
