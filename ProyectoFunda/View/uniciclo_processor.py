@@ -9,7 +9,7 @@ def create_matrices():
     matrix_A = [
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-        21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 330,
         31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
         41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
         51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
@@ -18,7 +18,6 @@ def create_matrices():
         81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
         91, 92, 93, 94, 95, 96, 97, 98, 99, 100
     ]
-    
     matrix_B = [
         101, 102, 103, 104, 105, 106, 107, 108, 109, 110,
         111, 112, 113, 114, 115, 116, 117, 118, 119, 120,
@@ -33,7 +32,6 @@ def create_matrices():
     ]
     
     return matrix_A, matrix_B  # Retorna las matrices A y B
-
 class UnicicloProcessor:
     def __init__(self, instructions, memory_A, memory_B):
         self.instructions = instructions
@@ -44,6 +42,10 @@ class UnicicloProcessor:
         self.instruction_memory = instructions
         self.labels = self.parse_labels(instructions)
         self.initialize_memory(memory_A, memory_B)
+        self.total_instructions = None
+        self.cpi = None
+        self.ipc = None
+        self.InsActual=0
 
     def initialize_memory(self, memory_A, memory_B):
         # Inicializar memoria con matrix_A en la dirección 0
@@ -148,13 +150,18 @@ class UnicicloProcessor:
             print(f"Executed JALR: PC = {self.PC}, x{rd} = {self.registers[f'x{rd}']}")
 
     def run_step_by_step(self):
-        while self.PC < len(self.instructions) * 4:
+        if self.PC < len(self.instructions) * 4:
             instruction = self.fetch()
             decoded = self.decode(instruction)
             self.execute(decoded)
             self.cycles += 1
-            self.print_state()
-            input("Press Enter to execute the next instruction...")
+            #self.print_state()
+            self.total_instructions = 1
+            self.cpi = 1
+            self.ipc = 1
+            self.InsActual+=1
+        else:
+            print("no hay más procedimientos")
 
     def run_timed(self, interval):
         while self.PC < len(self.instructions) * 4:
@@ -163,6 +170,22 @@ class UnicicloProcessor:
             self.execute(decoded)
             self.cycles += 1
             self.print_state()
+            self.InsActual += 1
+            self.total_instructions = 1
+            self.cpi = 1
+            self.ipc = 1
+            time.sleep(interval)
+    def run_timed2(self, interval):
+        while self.PC < len(self.instructions) * 4:
+            instruction = self.fetch()
+            decoded = self.decode(instruction)
+            self.execute(decoded)
+            self.cycles += 1
+            self.print_state()
+            self.InsActual += 1
+            self.total_instructions = 1
+            self.cpi = 1
+            self.ipc = 1
             time.sleep(interval)
 
     def run_to_completion(self):
@@ -180,11 +203,11 @@ class UnicicloProcessor:
         print(f"Memory (result area): {self.memory[200:299]}")  # Mostrar la zona de memoria donde se almacenan los resultados
 
     def print_statistics(self):
-        total_instructions = len(self.instructions)
-        cpi = self.cycles / total_instructions
-        ipc = total_instructions / self.cycles
-        print(f"CPI: {cpi}")
-        print(f"IPC: {ipc}")
+        self.total_instructions = len(self.instructions)
+        self.cpi = self.cycles / self.total_instructions
+        self.ipc = self.total_instructions / self.cycles
+        print(f"CPI: {self.cpi}")
+        print(f"IPC: {self.ipc}")
         print(f"Total Cycles: {self.cycles}")
 
 if __name__ == "__main__":
