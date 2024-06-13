@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
+
 class Ventana:
     def __init__(self, root):
         self.root = root
@@ -22,7 +23,7 @@ class Ventana:
 
         # Carga la imagen de CRiesgos
         self.Img_CRiesgos = Image.open("UnidadR.png")
-        self.Img_CRiesgos= self.Img_CRiesgos.resize((700, 300), Image.LANCZOS)
+        self.Img_CRiesgos = self.Img_CRiesgos.resize((700, 300), Image.LANCZOS)
         self.CRiesgos_imagen = ImageTk.PhotoImage(self.Img_CRiesgos)
 
         # Carga la imagen de SRiesgos
@@ -55,15 +56,40 @@ class Ventana:
 
         self.Tipo = tk.Menu(self.barra_menu, tearoff=False)
 
+        # Crear submenú Uniciclo
+        self.Uniciclo = tk.Menu(self.barra_menu, tearoff=False)
+        self.Uniciclo.add_command(command=mostrar_Uniciclo, label="Ejecución paso a paso")
+        self.Uniciclo.add_command(command=mostrar_Uniciclo, label="Ejecución a un ritmo")
+        self.Uniciclo.add_command(command=mostrar_Uniciclo, label="Ejecución completa")
+
+        # Crear submenú Multiciclo
+        self.Multiciclo = tk.Menu(self.barra_menu, tearoff=False)
+        self.Multiciclo.add_command(command=mostrar_Multiciclo, label="Ejecución paso a paso")
+        self.Multiciclo.add_command(command=mostrar_Multiciclo, label="Ejecución a un ritmo")
+        self.Multiciclo.add_command(command=mostrar_Multiciclo, label="Ejecución completa")
+
+        # Crear submenú CRiesgos
+        self.CRiesgos = tk.Menu(self.barra_menu, tearoff=False)
+        self.CRiesgos.add_command(command=mostrar_CRiesgos, label="Ejecución paso a paso")
+        self.CRiesgos.add_command(command=mostrar_CRiesgos, label="Ejecución a un ritmo")
+        self.CRiesgos.add_command(command=mostrar_CRiesgos, label="Ejecución completa")
+
+        # Crear submenú SRiesgos
+        self.SRiesgos = tk.Menu(self.barra_menu, tearoff=False)
+        self.SRiesgos.add_command(command=mostrar_SRiesgos, label="Ejecución paso a paso")
+        self.SRiesgos.add_command(command=mostrar_SRiesgos, label="Ejecución a un ritmo")
+        self.SRiesgos.add_command(command=mostrar_SRiesgos, label="Ejecución completa")
+
+        # Añadir menús desplegables al menú principal
         self.barra_menu.add_cascade(menu=self.Tipo, label="Tipo de procesador")
-        self.Tipo.add_cascade(command=mostrar_Uniciclo, label="Uniciclo")
-        self.Tipo.add_cascade(command=mostrar_Multiciclo, label="Multiciclo")
-        self.Tipo.add_cascade(command=mostrar_CRiesgos, label="Segmentado con riesgos y stalls")
-        self.Tipo.add_cascade(command=mostrar_SRiesgos, label="Segmentado con unidad de riesgos y adelantamiento")
+        self.Tipo.add_cascade(menu=self.Uniciclo, label="Uniciclo")
+        self.Tipo.add_cascade(menu=self.Multiciclo, label="Multiciclo")
+        self.Tipo.add_cascade(menu=self.CRiesgos, label="Segmentado con riesgos y stalls")
+        self.Tipo.add_cascade(menu=self.SRiesgos, label="Segmentado con unidad de riesgos y adelantamiento")
 
         self.root.config(menu=self.barra_menu)
 
-#Espacio de avanzar o pausar
+        # Espacio de avanzar o pausar
         self.boton_retoceda = tk.Button(root, text='«', font=("Arial", 20))
         self.boton_retoceda.place(x=40, y=5)
         self.boton_avance = tk.Button(root, text='»', font=("Arial", 20))
@@ -75,7 +101,7 @@ class Ventana:
         self.boton_reversa = tk.Button(root, text='🔁', font=("Arial", 20))
         self.boton_reversa.place(x=217, y=5)
 
-#Espacio para el diagrama o modelado
+        # Espacio para el diagrama o modelado
         self.outer_diagram_frame = tk.Frame(root, highlightbackground="gray", highlightthickness=1)
         self.outer_diagram_frame.place(x=20, y=65)
 
@@ -89,7 +115,7 @@ class Ventana:
 
         self.diagram_canva.config(scrollregion=self.diagram_canva.bbox("all"))
 
-#Espacio para Registers
+        # Espacio para Registers
 
         # Crear un Frame para contener el Treeview y las Scrollbars
         self.frame = tk.Frame(root)
@@ -114,59 +140,24 @@ class Ventana:
         tree.heading("col1", text="Nombre")
         tree.heading("col2", text="Valor")
 
-
         # Definir el tamaño de las columnas
         tree.column("col1", width=100)
         tree.column("col2", width=190)
 
-
         # Insertar 32 filas de datos en el Treeview
-        #for i in range(0, 32):
-        tree.insert("", "end", values=(f"x0", f"0x00000000"))
-        tree.insert("", "end", values=(f"x1", f"0x00000000"))
-        tree.insert("", "end", values=(f"x2", f"0x00000000"))
-        tree.insert("", "end", values=(f"x3", f"0x00000000"))
-        tree.insert("", "end", values=(f"x4", f"0x00000000"))
-        tree.insert("", "end", values=(f"x5", f"0x00000000"))
-        tree.insert("", "end", values=(f"x6", f"0x00000000"))
-        tree.insert("", "end", values=(f"x7", f"0x00000000"))
-        tree.insert("", "end", values=(f"x8", f"0x00000000"))
-        tree.insert("", "end", values=(f"x9", f"0x00000000"))
-        tree.insert("", "end", values=(f"x10", f"0x00000000"))
-        tree.insert("", "end", values=(f"x11", f"0x00000000"))
-        tree.insert("", "end", values=(f"x12", f"0x00000000"))
-        tree.insert("", "end", values=(f"x13", f"0x00000000"))
-        tree.insert("", "end", values=(f"x14", f"0x00000000"))
-        tree.insert("", "end", values=(f"x15", f"0x00000000"))
-        tree.insert("", "end", values=(f"x16", f"0x00000000"))
-        tree.insert("", "end", values=(f"x17", f"0x00000000"))
-        tree.insert("", "end", values=(f"x18", f"0x00000000"))
-        tree.insert("", "end", values=(f"x19", f"0x00000000"))
-        tree.insert("", "end", values=(f"x20", f"0x00000000"))
-        tree.insert("", "end", values=(f"x21", f"0x00000000"))
-        tree.insert("", "end", values=(f"x22", f"0x00000000"))
-        tree.insert("", "end", values=(f"x23", f"0x00000000"))
-        tree.insert("", "end", values=(f"x24", f"0x00000000"))
-        tree.insert("", "end", values=(f"x25", f"0x00000000"))
-        tree.insert("", "end", values=(f"x26", f"0x00000000"))
-        tree.insert("", "end", values=(f"x27", f"0x00000000"))
-        tree.insert("", "end", values=(f"x28", f"0x00000000"))
-        tree.insert("", "end", values=(f"x29", f"0x00000000"))
-        tree.insert("", "end", values=(f"x30", f"0x00000000"))
-        tree.insert("", "end", values=(f"x31", f"0x00000000"))
-        
-
+        for i in range(32):
+            tree.insert("", "end", values=(f"x{i}", f"0x00000000"))
 
         self.label_register = tk.Label(root, text="Registers", font=("Arial", 9))
         self.label_register.place(x=860, y=5)
 
-        #Espacio para informacion de ejecucion
+        # Espacio para informacion de ejecucion
         self.canvas_execute_inf = tk.Canvas(root, width=330, height=200, highlightbackground="black", highlightthickness=1)
         self.canvas_execute_inf.place(x=850, y=300)
         self.label_executeInf = tk.Label(root, text="Execution info", font=("Arial", 9))
         self.label_executeInf.place(x=860, y=290)
 
-        self.entry1_execInf = tk.Entry(self.canvas_execute_inf,width=30, font=("Arial", 9))
+        self.entry1_execInf = tk.Entry(self.canvas_execute_inf, width=30, font=("Arial", 9))
         self.entry1_execInf.place(x=100, y=10)
         self.label_execInf1 = tk.Label(self.canvas_execute_inf, text="Cycles:", font=("Arial", 9))
         self.label_execInf1.place(x=20, y=10)
@@ -190,9 +181,6 @@ class Ventana:
         self.entry5_execInf.place(x=100, y=170)
         self.label_execInf5 = tk.Label(self.canvas_execute_inf, text="Clock rate:", font=("Arial", 9))
         self.label_execInf5.place(x=20, y=170)
-
-
-
 
 if __name__ == "__main__":
     VentaPri = tk.Tk()
